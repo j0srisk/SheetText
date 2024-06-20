@@ -102,7 +102,11 @@ public struct ExpandableText: View {
             .modifier(OverlayAdapter(alignment: .trailingLastTextBaseline, view: {
                 if shouldShowMoreButton {
                     Button {
-                        withAnimation(expandAnimation) { isExpanded.toggle() }
+                        if expansionMode == .inline {
+                            withAnimation(expandAnimation) { isExpanded.toggle() }
+                        } else if expansionMode == .sheet {
+                            isSheetPresented.toggle()
+                        }
                     } label: {
                         Text(moreButtonText)
                             .font(moreButtonFont ?? font)
