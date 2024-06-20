@@ -26,9 +26,16 @@ ExpandableText("Lorem ipsum dolor sit amet, consectetur adipiscing elit...")
  ```
 */
 public struct ExpandableText: View {
+    
+    public enum ExpansionMode {
+        case inline
+        case sheet
+    }
 
     @State private var isExpanded: Bool = false
     @State private var isTruncated: Bool = false
+    
+    @State private var isSheetPresented: Bool = false
 
     @State private var intrinsicSize: CGSize = .zero
     @State private var truncatedSize: CGSize = .zero
@@ -44,6 +51,9 @@ public struct ExpandableText: View {
     internal var expandAnimation: Animation = .default
     internal var collapseEnabled: Bool = false
     internal var trimMultipleNewlinesWhenTruncated: Bool = true
+    
+    internal var expansionMode: ExpansionMode = .inline
+    internal var sheetTitleText: String = ""
     
     /**
      Initializes a new `ExpandableText` instance with the specified text string, trimmed of any leading or trailing whitespace and newline characters.
@@ -80,9 +90,13 @@ public struct ExpandableText: View {
             )
             .contentShape(Rectangle())
             .onTapGesture {
-                if (isExpanded && collapseEnabled) ||
-                     shouldShowMoreButton {
-                    withAnimation(expandAnimation) { isExpanded.toggle() }
+                if expansionMode == .inline {
+                    if (isExpanded && collapseEnabled) ||
+                        shouldShowMoreButton {
+                        withAnimation(expandAnimation) { isExpanded.toggle() }
+                    }
+                } else if expansionMode == .sheet {
+                    isSheetPresented.toggle()
                 }
             }
             .modifier(OverlayAdapter(alignment: .trailingLastTextBaseline, view: {
@@ -96,6 +110,28 @@ public struct ExpandableText: View {
                     }
                 }
             }))
+            .sheet(isPresented: $isSheetPresented) {
+                NavigationView {
+                    VStack {
+                        ScrollView {
+                            Text(text)
+                                .padding()
+                        }
+                        Spacer()
+                    }
+                    .navigationTitle(sheetTitleText)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button(action: {
+                                isSheetPresented.toggle()
+                            }, label: {
+                                Text("Done")
+                            })
+                        }
+                    }
+                }
+            }
     }
     
     private var content: some View {

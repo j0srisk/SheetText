@@ -109,3 +109,17 @@ public extension ExpandableText {
         return copy
     }
 }
+
+public extension ExpandableText {
+    func expansionMode(_ mode: ExpansionMode) -> Self {
+        var copy = self
+        copy.expansionMode = mode
+        return copy
+    }
+    
+    func sheetTitleText(_ titleText: String) -> Self {
+        var copy = self
+        copy.sheetTitleText = titleText
+        return copy
+    }
+}
