@@ -43,7 +43,7 @@ public struct ExpandableText: View {
     
     private let text: String
     internal var font: Font = .body
-    internal var lineSpacing: CGFloat = 10
+    internal var lineSpacing: CGFloat = 0
     internal var color: Color = .primary
     internal var lineLimit: Int = 3
     internal var moreButtonText: String = "more"
@@ -120,7 +120,8 @@ public struct ExpandableText: View {
                     VStack {
                         ScrollView {
                             Text(text)
-                                .padding()
+                                .padding(.horizontal, 24)
+                                .padding(.vertical, 20)
                         }
                         Spacer()
                     }
