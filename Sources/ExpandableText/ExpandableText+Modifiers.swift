@@ -122,4 +122,10 @@ public extension ExpandableText {
         copy.sheetTitleText = titleText
         return copy
     }
+    
+    func lineSpacing(_ lineSpacing: CGFloat) -> Self {
+        var copy = self
+        copy.lineSpacing = lineSpacing
+        return copy
+    }
 }
