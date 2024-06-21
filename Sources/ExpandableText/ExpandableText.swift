@@ -96,7 +96,7 @@ public struct ExpandableText: View {
                         shouldShowMoreButton {
                         withAnimation(expandAnimation) { isExpanded.toggle() }
                     }
-                } else if expansionMode == .sheet {
+                } else if expansionMode == .sheet && shouldShowMoreButton {
                     isSheetPresented.toggle()
                 }
             }
@@ -105,7 +105,7 @@ public struct ExpandableText: View {
                     Button {
                         if expansionMode == .inline {
                             withAnimation(expandAnimation) { isExpanded.toggle() }
-                        } else if expansionMode == .sheet {
+                        } else if expansionMode == .sheet && shouldShowMoreButton {
                             isSheetPresented.toggle()
                         }
                     } label: {
